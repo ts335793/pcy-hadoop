@@ -60,45 +60,4 @@ public class RunPCY {
         PCY pcy = new PCY(supportThreshold, maxId, maxBucket);
         System.out.println(pcy.getFrequentPairs(basketReader));
     }
-
-    /*public static void main(String[] args) {
-        parseParameters(args);
-
-        Configuration configuration = new Configuration();
-
-        FileSystem fileSystem = null;
-        try {
-            fileSystem = FileSystem.get(configuration);
-        } catch (IOException exception) {
-            System.out.println("Failed to get file system.");
-            System.out.println(exception.getLocalizedMessage());
-            return;
-        }
-
-        Path filePath = new Path(fileURI);
-
-        System.out.println("Creating file.");
-        FSDataOutputStream outputStream = null;
-        try {
-            outputStream = fileSystem.create(filePath);
-        } catch (IOException exception) {
-            System.out.println("Failed to create input stream.");
-            System.out.println(exception.getLocalizedMessage());
-            return;
-        }
-
-        Integer[] ids = { 1, 2, 3, -1, 1, 2, -1 };
-
-        for (Integer id : ids) {
-            try {
-                outputStream.writeInt(id);
-            } catch (IOException exception) {
-                System.out.println("Failed to write to output stream.");
-                System.out.println(exception.getLocalizedMessage());
-                return;
-            }
-        }
-
-        System.out.println("Created file.");
-    }*/
 }

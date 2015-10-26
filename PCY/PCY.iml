@@ -10,7 +10,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../lab_01_pseudo_distributed/hadoop-2.6.0/share/hadoop/common/hadoop-common-2.6.0.jar!/" />
+          <root url="jar://$MODULE_DIR$/../hadoop-2.6.0/share/hadoop/common/hadoop-common-2.6.0.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -19,16 +19,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../lab_01_pseudo_distributed/hadoop-2.6.0/share/hadoop/mapreduce/hadoop-mapreduce-client-core-2.6.0.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/../lab_01_pseudo_distributed/hadoop-2.6.0/share/hadoop/common/lib/commons-cli-1.2.jar!/" />
+          <root url="jar://$MODULE_DIR$/../hadoop-2.6.0/share/hadoop/common/lib/commons-cli-1.2.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
