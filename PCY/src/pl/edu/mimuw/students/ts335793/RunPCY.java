@@ -58,6 +58,8 @@ public class RunPCY {
         BasketReader basketReader = new BasketReader(inputStream);
 
         PCY pcy = new PCY(supportThreshold, maxId, maxBucket);
-        System.out.println(pcy.getFrequentPairs(basketReader));
+        pcy.runAlgorithm(basketReader);
+        System.out.println(pcy.getFrequentItems());
+        System.out.println(pcy.getFrequentPairs());
     }
 }

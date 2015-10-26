@@ -14,14 +14,8 @@ public class Basket {
         items.add(item);
     }
 
-    public ArrayList<ArrayList<Item>> getSingletons() {
-        ArrayList<ArrayList<Item>> singletons = new ArrayList<>();
-        for (Item item : items) {
-            ArrayList<Item> singleton = new ArrayList<>();
-            singleton.add(item);
-            singletons.add(singleton);
-        }
-        return singletons;
+    public ArrayList<Item> getItems() {
+        return items;
     }
 
     public ArrayList<ArrayList<Item>> getPairs() {

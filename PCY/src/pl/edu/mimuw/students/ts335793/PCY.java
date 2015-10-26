@@ -10,8 +10,11 @@ public class PCY {
     private int maxId;
     private int maxBucket;
 
-    private CompressedBucketCounter compressedItemCounter;
+    private int[] itemCounter;
     private CompressedBucketCounter compressedPairCounter;
+
+    private ArrayList<Item> frequentItems;
+    private ArrayList<ArrayList<Item>> frequentPairs;
 
     public PCY(int supportThreshold, int maxId, int maxBucket) {
         this.supportThreshold = supportThreshold;
@@ -20,42 +23,38 @@ public class PCY {
     }
 
     private void firstPass(BasketReader basketReader) {
-        BucketCounter itemCounter = new BucketCounter(maxId + 1, supportThreshold);
+        itemCounter = new int[maxId + 1];
         BucketCounter pairCounter = new BucketCounter(maxBucket + 1, supportThreshold);
-
-        System.out.println("COKOLWIEK");
 
         while (basketReader.hasNext()) {
             Basket basket = basketReader.next();
-            System.out.println(basket.getSingletons());
-            for (ArrayList<Item> singleton : basket.getSingletons()) {
-                itemCounter.incrementCounter(singleton);
+            for (Item item : basket.getItems()) {
+                itemCounter[item.getId()] = Math.min(itemCounter[item.getId()] + 1, supportThreshold);
             }
             for (ArrayList<Item> pair : basket.getPairs()) {
                 pairCounter.incrementCounter(pair);
             }
         }
 
-        compressedItemCounter = itemCounter.toCompressedBucketCounter();
-        System.out.println(compressedItemCounter);
         compressedPairCounter = pairCounter.toCompressedBucketCounter();
-        System.out.println(compressedPairCounter);
+
+        frequentItems = new ArrayList<>();
+        for (int i = 0; i <= maxId; i++) {
+            if (itemCounter[i] == supportThreshold) {
+                frequentItems.add(new Item(i));
+            }
+        }
     }
 
-    private ArrayList<ArrayList<Item>> secondPass(BasketReader basketReader) {
+    private void secondPass(BasketReader basketReader) {
         HashMap<ArrayList<Item>, Integer> frequentPairCandidates = new HashMap<>();
 
         while (basketReader.hasNext()) {
             Basket basket = basketReader.next();
 
             for (ArrayList<Item> pair : basket.getPairs()) {
-                ArrayList<Item> firstSingleton = new ArrayList<>();
-                firstSingleton.add(pair.get(0));
-                ArrayList<Item> secondSingleton = new ArrayList<>();
-                secondSingleton.add(pair.get(1));
-
-                if (compressedItemCounter.isFrequent(firstSingleton)
-                 && compressedItemCounter.isFrequent(secondSingleton)
+                if (itemCounter[pair.get(0).getId()] == supportThreshold
+                 && itemCounter[pair.get(1).getId()] == supportThreshold
                  && compressedPairCounter.isFrequent(pair)) {
                     int count = frequentPairCandidates.getOrDefault(pair, 0);
                     frequentPairCandidates.put(pair, Math.min(supportThreshold, count + 1));
@@ -63,21 +62,25 @@ public class PCY {
             }
         }
 
-        System.out.println(frequentPairCandidates);
-
-        ArrayList<ArrayList<Item>> frequentPairs = new ArrayList<>();
+        frequentPairs = new ArrayList<>();
         for(Map.Entry<ArrayList<Item>, Integer> entry : frequentPairCandidates.entrySet()) {
             if (entry.getValue() == supportThreshold) {
                 frequentPairs.add(entry.getKey());
             }
         }
-
-        return frequentPairs;
     }
 
-    public ArrayList<ArrayList<Item>> getFrequentPairs(BasketReader basketReader) {
+    public void runAlgorithm(BasketReader basketReader) {
         firstPass(basketReader);
         basketReader.reset();
-        return secondPass(basketReader);
+        secondPass(basketReader);
+    }
+
+    public ArrayList<Item> getFrequentItems() {
+        return frequentItems;
+    }
+
+    public ArrayList<ArrayList<Item>> getFrequentPairs() {
+        return frequentPairs;
     }
 }
