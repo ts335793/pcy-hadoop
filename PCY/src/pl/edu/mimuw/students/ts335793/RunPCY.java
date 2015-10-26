@@ -69,7 +69,7 @@ public class RunPCY {
 
         FSDataOutputStream outputItemStream;
         try {
-            outputItemStream = fileSystem.create(outputItemPath, true);
+            outputItemStream = fileSystem.create(outputItemPath);
         } catch (IOException exception) {
             System.out.println("Failed to create output item stream.");
             System.out.println(exception.getLocalizedMessage());
@@ -79,7 +79,7 @@ public class RunPCY {
 
         FSDataOutputStream outputPairStream;
         try {
-            outputPairStream = fileSystem.create(outputPairPath, true);
+            outputPairStream = fileSystem.create(outputPairPath);
         } catch (IOException exception) {
             System.out.println("Failed to create output pair stream.");
             System.out.println(exception.getLocalizedMessage());
