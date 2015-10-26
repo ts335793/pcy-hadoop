@@ -1,7 +1,9 @@
 package pl.edu.mimuw.students.ts335793;
 
+import java.util.ArrayList;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FSDataInputStream;
+import org.apache.hadoop.fs.FSDataOutputStream;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 
@@ -61,5 +63,51 @@ public class RunPCY {
         pcy.runAlgorithm(basketReader);
         System.out.println(pcy.getFrequentItems());
         System.out.println(pcy.getFrequentPairs());
+
+        Path outputItemPath = new Path(fileURI + ".item");
+        Path outputPairPath = new Path(fileURI + ".pair");
+
+        FSDataOutputStream outputItemStream;
+        try {
+            outputItemStream = fileSystem.create(outputItemPath, true);
+        } catch (IOException exception) {
+            System.out.println("Failed to create output item stream.");
+            System.out.println(exception.getLocalizedMessage());
+            System.exit(1);
+            return;
+        }
+
+        FSDataOutputStream outputPairStream;
+        try {
+            outputPairStream = fileSystem.create(outputPairPath, true);
+        } catch (IOException exception) {
+            System.out.println("Failed to create output pair stream.");
+            System.out.println(exception.getLocalizedMessage());
+            System.exit(1);
+            return;
+        }
+
+        for (Item item : pcy.getFrequentItems()) {
+            try {
+                outputItemStream.writeInt(item.getId());
+            } catch (IOException exception) {
+                System.out.println("Failed to write to output item stream.");
+                System.out.println(exception.getLocalizedMessage());
+                System.exit(1);
+                return;
+            }
+        }
+
+        for (ArrayList<Item> pair : pcy.getFrequentPairs()) {
+            try {
+                outputPairStream.writeInt(pair.get(0).getId());
+                outputPairStream.writeInt(pair.get(1).getId());
+            } catch (IOException exception) {
+                System.out.println("Failed to write to output pair stream.");
+                System.out.println(exception.getLocalizedMessage());
+                System.exit(1);
+                return;
+            }
+        }
     }
 }
