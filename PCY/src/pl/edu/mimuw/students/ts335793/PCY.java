@@ -56,7 +56,11 @@ public class PCY {
                 if (itemCounter[pair.get(0).getId()] == supportThreshold
                  && itemCounter[pair.get(1).getId()] == supportThreshold
                  && compressedPairCounter.isFrequent(pair)) {
-                    int count = frequentPairCandidates.getOrDefault(pair, 0);
+                    //int count = frequentPairCandidates.getOrDefault(pair, 0);
+                    int count = 0;
+                    if (frequentPairCandidates.containsKey(pair)) {
+                        count = frequentPairCandidates.get(pair);
+                    }
                     frequentPairCandidates.put(pair, Math.min(supportThreshold, count + 1));
                 }
             }

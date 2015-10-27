@@ -54,4 +54,9 @@ public class BasketReader implements Iterator<Basket> {
         tryReadNextBasket();
         return basket;
     }
+    
+    @Override
+    public void remove() {
+        throw new UnsupportedOperationException();
+    }
 }
